@@ -1,6 +1,7 @@
 import RPi.GPIO as GPIO
 import time
 import os
+import random
  
 GPIO.setmode(GPIO.BCM)
  
@@ -37,7 +38,7 @@ def forward(delay, steps):
   GPIO.output(green, 0)
  
 def backwards(delay, steps):  
-  GPIO.output(red, 1)
+  GPIO.output(green, 1)
   for i in range(0, steps):
     setStep(1, 0, 0, 1)
     time.sleep(delay)
@@ -47,7 +48,7 @@ def backwards(delay, steps):
     time.sleep(delay)
     setStep(1, 0, 1, 0)
     time.sleep(delay)
-  GPIO.output(red, 0)
+  GPIO.output(green, 0)
  
   
 def setStep(w1, w2, w3, w4):
@@ -71,8 +72,11 @@ def RCtime (RCpin):
 
 while True:
         if RCtime(18) > 500:
-		GPIO.output(red, 0)
-		forward(10 / 1000.0, 10)
+			GPIO.output(red, 0)
+			if random.randrange(1,10) < 2:
+				forward(10 / 1000.0, 10)
+			else:
+				backwards(10 / 1000.0, 10)
         else:
                 GPIO.output(red, 1)
 
