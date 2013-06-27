@@ -11,7 +11,7 @@ void setup(){
 }
 
 void loop(){  
-  if(RCtime() > 2000)
+  if(RCtime() > 1000)
   {
     digitalWrite(blue_led, LOW);
     digitalWrite(green_led, HIGH);
