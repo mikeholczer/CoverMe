@@ -1,97 +1,40 @@
-int enable_pin = 18;
-int coil_A_1_pin = 4;
-int coil_A_2_pin = 17;
-int coil_B_1_pin = 23;
-int coil_B_2_pin = 24;
+const int rc_pin = 2;
 
-int red_led = 25;
-int green_led = 22;
+const int blue_led = 5;
+const int green_led = 4;
 
 void setup(){
-  pinMode(enable_pin, OUTPUT);
-  pinMode(coil_A_1_pin, OUTPUT);
-  pinMode(coil_A_2_pin, OUTPUT);
-  pinMode(coil_B_1_pin, OUTPUT);
-  pinMode(coil_B_2_pin, OUTPUT);
-  
-  pinMode(red_led, OUTPUT);
+  pinMode(blue_led, OUTPUT);
   pinMode(green_led, OUTPUT);
   
-  digitalWrite(enable_pin, HIGH);
+  //digitalWrite(enable_pin, HIGH);
 }
 
-void loop(){
-  if(RCtime(18) > 500)
+void loop(){  
+  if(RCtime() > 2000)
   {
-    digitalWrite(red_led, LOW);
-    if(random(1,10) < 2)
-    {
-      forward(10 / 1000.0, 10);
-    }
-    else
-    {
-      backwards(10 / 1000.0, 10);
-    }
+    digitalWrite(blue_led, LOW);
+    digitalWrite(green_led, HIGH);
   }
   else
   {
-    digitalWrite(red_led, HIGH);
-  }
-}
-
-void forward(int delay_time, int steps){
-  digitalWrite(green_led, HIGH);
-  
-  for(int i = 0; i<steps; i++)
-  {
-    setStep(1, 0, 1, 0);
-    delay(delay_time);
-    setStep(0, 1, 1, 0);
-    delay(delay_time);
-    setStep(0, 1, 0, 1);
-    delay(delay_time);
-    setStep(1, 0, 0, 1);
-    delay(delay_time);
-  }
-  
+    digitalWrite(blue_led, HIGH);
     digitalWrite(green_led, LOW);
-}
-
-void backwards(int delay_time, int steps){
-  digitalWrite(green_led, HIGH);
-  
-  for(int i = 0; i<steps; i++)
-  {
-    setStep(1, 0, 0, 1);
-    delay(delay_time);
-    setStep(0, 1, 0, 1);
-    delay(delay_time);
-    setStep(0, 1, 1, 0);
-    delay(delay_time);
-    setStep(1, 0, 1, 0);
-    delay(delay_time);
   }
-  
-    digitalWrite(green_led, LOW);
 }
 
-void setStep(int w1, int w2, int w3, int w4)
-{
-  digitalWrite(coil_A_1_pin, w1);
-  digitalWrite(coil_A_2_pin, w2);
-  digitalWrite(coil_B_1_pin, w3);
-  digitalWrite(coil_B_2_pin, w4);
-}
-
-int RCtime(int RCpin)
+int RCtime()
 {
   int reading = 0;
-  pinMode(RCpin, OUTPUT);
-  digitalWrite(RCpin, LOW);
+  pinMode(rc_pin, OUTPUT);
+  digitalWrite(rc_pin, LOW);
+
   delay(.1);
-  
-  digitalWrite(RCpin, INPUT);
-  while(digitalRead(RCpin) == LOW)
+
+  digitalWrite(rc_pin, INPUT);
+
+  pinMode(rc_pin, INPUT);
+  while(digitalRead(rc_pin) == LOW)
   {
     reading++;
   }
